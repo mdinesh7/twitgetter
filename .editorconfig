@@ -14,7 +14,11 @@ max_line_length = 80
 indent_brace_style = 1TBS
 spaces_around_operators = true
 
-# Use 4 spaces for indentation in HTML, JavaScript
+# Use 2 spaces for indentation in HTML, JavaScript
+# Use 4 spaces for python
+[*.{html,js}]
+indent_size = 2
+
 [*.{py}]
 indent_size = 4
 
