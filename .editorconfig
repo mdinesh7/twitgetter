@@ -1,0 +1,23 @@
+# This file is for unifying the coding style for different editors and IDEs.
+# More information at http://EditorConfig.org
+
+# No .editorconfig files above the root directory
+root = true
+
+[*]
+indent_style = space
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+max_line_length = 80
+indent_brace_style = 1TBS
+spaces_around_operators = true
+
+# Use 4 spaces for indentation in HTML, JavaScript
+[*.{py}]
+indent_size = 4
+
+# Use 4 spaces for indentation in Markdown files
+[*.md]
+indent_size = 4
