@@ -65,7 +65,8 @@ class SearchTwit(StreamListener):
 
             if twit.get('place').get('bounding_box'):
                 place_bounding_box_type = twit['place']['bounding_box']['type']
-                place_bounding_box_coordinates = twit['place']['bounding_box']['coordinates'][0]
+                place_bounding_box_coordinates = twit[
+                    'place']['bounding_box']['coordinates'][0]
         else:
             place_type = ''
             place_name = ''
