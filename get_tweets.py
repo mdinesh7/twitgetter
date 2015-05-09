@@ -25,7 +25,10 @@ if __name__ == '__main__':
     twit_obj = SearchTwit()
     twit_stream = Stream(auth, twit_obj)
 
-    if len(search_terms) == 0:
-        print 'Empty list'
-    elif len(search_terms) > 0:
-        stream.filter(track=search_terms)
+    if isinstance(search_terms, list):
+        if len(search_terms) == 0:
+            print 'Empty list'
+        elif len(search_terms) > 0:
+            stream.filter(track=search_terms)
+    else:
+        'input should be list'
