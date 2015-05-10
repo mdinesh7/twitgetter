@@ -3,6 +3,7 @@ from tweepy import OAuthHandler
 from tweepy import Stream
 
 import json
+import datetime
 
 from config import consumer_key, consumer_secret, access_token, \
     access_token_secret, search_terms, collection
@@ -21,13 +22,17 @@ class SearchTwit(StreamListener):
 
         # twit location
         if twit.get('geo'):
-            geo_type = twit['geo']['type']
-            latitude = twit['geo']['coordinates'][0]
-            longitude = twit['geo']['coordinates'][1]
+            geo_type = twit.get('geo').get('type')
+            coordinates = twit.get('geo').get('coordinates')
+            if coordinates:
+                latitude = coordinates[0]
+                longitude = coordinates[1]
         elif twit.get('coordinates'):
-            geo_type = twit['coordinates']['type']
-            latitude = twit['geo']['coordinates'][1]
-            longitude = twit['geo']['coordinates'][0]
+            geo_type = twit.get('coordinates').get('type')
+            coordinates = twit.get('geo').get('coordinates')
+            if coordinates:
+                latitude = coordinates[1]
+                longitude = coordinates[0]
         else:
             geo_type = ''
             latitude = ''
@@ -35,16 +40,18 @@ class SearchTwit(StreamListener):
 
         # Twit place details
         if twit.get('place'):
-            place_type = twit['place']['place_type']
-            place_name = twit['place']['place_name']
-            place_full_name = twit['place']['place_full_name']
-            place_country_code = twit['place']['place_country_code']
-            place_country = twit['place']['place_country']
+            place_type = twit.get('place').get('place_type')
+            place_name = twit.get('place').get('place_name')
+            place_full_name = twit.get('place').get('place_full_name')
+            place_country_code = twit.get('place').get('place_country_code')
+            place_country = twit.get('place').get('place_country')
 
             if twit.get('place').get('bounding_box'):
-                place_bounding_box_type = twit['place']['bounding_box']['type']
-                place_bounding_box_coordinates = twit[
-                    'place']['bounding_box']['coordinates'][0]
+                place_bounding_box_type = twit.get('place').get('bounding_box').get('type')
+                place_bounding_box_coordinates_value = twit.get(
+                    'place').get('bounding_box').get('coordinates')
+                if place_bounding_box_coordinates:
+                    place_bounding_box_coordinates_value[0]
         else:
             place_type = ''
             place_name = ''
@@ -88,7 +95,8 @@ class SearchTwit(StreamListener):
             'place_country_code': place_country_code,
             'place_country': place_country,
             'place_bounding_box_type': place_bounding_box_type,
-            'place_bounding_box_coordinates': place_bounding_box_coordinates
+            'place_bounding_box_coordinates': place_bounding_box_coordinates,
+            'twit_written_to_db': datetime.datetime.now()
         })
         return True
 
