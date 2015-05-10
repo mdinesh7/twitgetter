@@ -1,45 +1,31 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+from pymongo import MongoClient
 
 import json
 
 from config import consumer_key, consumer_secret, access_token, \
-    access_token_secret, search_terms
+    access_token_secret, search_terms, db_name, col_name
 
 # Authenticate
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
 
+# Mongodb Connection
+client = MongoClient('localhost', 27017)
+db = client.db_name
+
+collection = db.col_name
+
+
 class SearchTwit(StreamListener):
 
     def on_data(self, data):
         '''If data exists'''
+        # All twit data
         twit = json.loads(data)
-        created_at = twit['created_at']
-        text = twit['text']
-        source = twit['source']
-        retweet_count = twit['retweet_count']
-        favorite_count = twit['favorite_count']
-        timestamp = twit['timestamp_ms']
-
-        # User
-        user_id = twit['user']['id']
-        user_name = twit['user']['name']
-        user_screen_name = twit['user']['screen_name']
-        user_location = twit['user']['location']
-        user_verified = twit['user']['verified']
-        user_followers_count = twit['user']['followers_count']
-        user_friends_count = twit['user']['friends_count']
-        user_listed_count = twit['user']['listed_count']
-        user_favourites_count = twit['user']['favourites_count']
-        user_statuses_count = twit['user']['statuses_count']
-        user_account_created_at_date = twit['user']['created_at']
-        user_utc_offset = twit['user']['utc_offset']
-        user_time_zone = twit['user']['time_zone']
-        user_geo_enabled = twit['user']['geo_enabled']
-        user_lang = twit['user']['lang']
 
         # twit location
         if twit.get('geo'):
@@ -76,6 +62,42 @@ class SearchTwit(StreamListener):
             place_bounding_box_type = ''
             place_bounding_box_coordinates = ''
 
+        collection.insert({
+            'created_at': twit['created_at'],
+            'text': twit['text'],
+            'source': twit['source'],
+            'retweet_count': twit['retweet_count'],
+            'favorite_count': twit['favorite_count'],
+            'timestamp': twit['timestamp_ms'],
+
+            # User
+            'user_id': twit['user']['id'],
+            'user_name': twit['user']['name'],
+            'user_screen_name': twit['user']['screen_name'],
+            'user_location': twit['user']['location'],
+            'user_verified': twit['user']['verified'],
+            'user_followers_count': twit['user']['followers_count'],
+            'user_friends_count': twit['user']['friends_count'],
+            'user_listed_count': twit['user']['listed_count'],
+            'user_favourites_count': twit['user']['favourites_count'],
+            'user_statuses_count': twit['user']['statuses_count'],
+            'user_account_created_at_date': twit['user']['created_at'],
+            'user_utc_offset': twit['user']['utc_offset'],
+            'user_time_zone': twit['user']['time_zone'],
+            'user_geo_enabled': twit['user']['geo_enabled'],
+            'user_lang': twit['user']['lang'],
+
+            'geo_type': geo_type,
+            'latitude': latitude,
+            'longitude': longitude,
+            'place_type': place_type,
+            'place_name': place_name,
+            'place_full_name': place_full_name,
+            'place_country_code': place_country_code,
+            'place_country': place_country,
+            'place_bounding_box_type': place_bounding_box_type,
+            'place_bounding_box_coordinates': place_bounding_box_coordinates
+        })
         return True
 
     def on_error(self, status):
