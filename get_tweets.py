@@ -1,23 +1,15 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
-from pymongo import MongoClient
 
 import json
 
 from config import consumer_key, consumer_secret, access_token, \
-    access_token_secret, search_terms, db_name, col_name
+    access_token_secret, search_terms, collection
 
 # Authenticate
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
-
-
-# Mongodb Connection
-client = MongoClient('localhost', 27017)
-db = client.db_name
-
-collection = db.col_name
 
 
 class SearchTwit(StreamListener):
