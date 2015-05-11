@@ -19,3 +19,10 @@ collection = db.languages
 
 search_terms = ["python", "javascript"]
 ```
+
+### Usage
+  - Install the dependencies
+  - Create python script called config.py and copy paste the code above.
+  - Enter your twitter api auth details in config.py
+  - Enter the terms you want to track in search_terms list, which is available inside config.py
+  - To start the program, type python get_tweets.py
