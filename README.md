@@ -19,6 +19,9 @@ collection = db.languages
 
 search_terms = ["python", "javascript"]
 ```
+### Dependencies
+  - pymongo
+  - tweepy
 
 ### Usage
   - Install the dependencies
