@@ -3,7 +3,7 @@ from tweepy import OAuthHandler
 from tweepy import Stream
 
 import json
-import datetime
+from time import gmtime, strftime
 
 from config import consumer_key, consumer_secret, access_token, \
     access_token_secret, search_terms, collection
@@ -96,7 +96,7 @@ class SearchTwit(StreamListener):
             'place_country': place_country,
             'place_bounding_box_type': place_bounding_box_type,
             'place_bounding_box_coordinates': place_bounding_box_coordinates,
-            'twit_written_to_db': datetime.datetime.now()
+            'twit_written_to_db': strftime("%Y-%m-%d %H:%M:%S", gmtime())
         })
         return True
 
